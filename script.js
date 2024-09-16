@@ -152,19 +152,20 @@ const timeEl = document.getElementById('time')
 
 const timeTakenEl = document.getElementById('item-taken')
 const cardFilpsEl = document.getElementById('card-flips')
-// // const bestTimeEl = document.getElementById('best-time')
-// // const bestFlipEl = document.getElementById('best-flip')
 let gameStarted = false
 let gameEnded = false
 let userChoise = null
 let timeStarted = false
 
+let itemEl;
 
-// window.addEventListener('DOMContentLoaded', ()=>{
-//     // using local storage here
-//     // localStorage.setItem('best-flip', 0)
-//     // localStorage.setItem('best-time', 0)
+let numItemsOpen = new Set
+let cardFlips = 0
+let timeSec = 0
+let timeMin = 1
+let myInterval;
 
+//Choose Grid handle
 startBtns.forEach(btn =>{
     btn.addEventListener('click', (e)=>{
         if(e.target.classList.contains('byfour')){
@@ -189,11 +190,8 @@ startBtns.forEach(btn =>{
     })
 })
 
-// })
 
-
-
-let itemEl;
+//Start Game Function
 function startGame(){
     // Dynamiclly reder the photo-card el
     const gameLayOut = userChoise.map((item) => {
@@ -220,12 +218,6 @@ itemEl.forEach(item => {
 
 
 
-let numItemsOpen = new Set
-let cardFlips = 0
-let timeSec = 0
-let timeMin = 1
-let myInterval;
-
 const setCardFlips = (e) =>{  
     if(numItemsOpen.size < 2){
         itemEl.forEach(item=>{
@@ -236,7 +228,6 @@ const setCardFlips = (e) =>{
 }
 
 const timer = () => {
-    
        myInterval = setInterval(()=>{
             timeSec++
             secondEl.innerHTML = timeSec
@@ -251,23 +242,12 @@ const timer = () => {
                 timeSec = 0
             }
         },1000)
-
 }
 
 const calcultateScore = () =>{
     timeTakenEl.innerHTML = timeEl.innerHTML
     cardFilpsEl.innerHTML = cardFlips
-
-    // let bestFlip = localStorage.getItem('best-flip')
-
-    // if(bestFlip < cardFlips){
-    //     localStorage.setItem('best-flip', cardFlips)
-    // }
-
-    // bestFlipEl.textContent = localStorage.getItem('best-flip')
 }
-
-
 
 const openCard = (e) =>{
     if(numItemsOpen.size < 2){
@@ -278,7 +258,6 @@ const openCard = (e) =>{
         })
     }
 }
-
 
 const checker = () =>{
     let openedCardsArr = []
@@ -297,21 +276,18 @@ const checker = () =>{
     }
 }
 
-
 const closeCards = () =>{
-        if(numItemsOpen.size > 1){
-                    setTimeout(function(){
-                        itemEl.forEach(item =>{
-                            if(!item.classList.contains('active')){
-                                item.classList.add('hide')
-                                numItemsOpen.clear()
-                            }
-                        })
-                    },600)
-                    
-            }
+    if(numItemsOpen.size > 1){
+        setTimeout(function(){
+            itemEl.forEach(item =>{
+                if(!item.classList.contains('active')){
+                    item.classList.add('hide')
+                    numItemsOpen.clear()
+                }
+            })
+        },600)
+    }
 }
-
 
 function changePage(){
     if(gameStarted){
@@ -319,6 +295,7 @@ function changePage(){
         gameGameEl.classList.remove('display-none')
     }
 }
+
 function endGame(){
     gameStarted = false
     gameEnded = true
@@ -337,6 +314,7 @@ function endGame(){
 
 }
 
+// Play again functionality
 const playAgainBtn = document.getElementById('play-again-btn')
 const playAgain = () =>{
     gameEndedEl.classList.add('display-none')
@@ -354,8 +332,8 @@ playAgainBtn.addEventListener('click', ()=>{
     playAgain()
 })
 
+// End game functionality
 const homeBtn = document.getElementById('homeBtn')
-
 homeBtn.addEventListener('click', ()=>{
     gameInfo.classList.remove('display-none')
     gameOption.classList.remove('display-none')
