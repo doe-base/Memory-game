@@ -2,6 +2,8 @@
 
 The Memory Game is a fun and simple project built using vanilla JavaScript. The goal of the game is to match pairs of cards by remembering their positions. It’s a great way to practice your memory skills while enjoying an engaging game.
 
+This project really show my ablity to modularization software problems.
+
 
 
 ## How to Play
