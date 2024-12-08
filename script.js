@@ -137,6 +137,7 @@ let gameData3 = [
     },
 ].sort((a, b) => 0.5 - Math.random())
 
+
 const gridContainerEl = document.getElementById('game-grid-container')
 const gameInfo = document.getElementById('game-info')
 const gameOption = document.getElementById('game-option')

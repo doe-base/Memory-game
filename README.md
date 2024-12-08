@@ -37,3 +37,6 @@ This project really show my ablity to modularization software problems.
 To run the game locally:
     1. Clone the repository
     2. Open index.html
+
+
+# Starting Version 2
