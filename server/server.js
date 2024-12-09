@@ -4,43 +4,44 @@ const io = require("socket.io")(3000, {
 	}
 })
 
+
+
+const rooms = {};
 // Handle WebSocket connections
 io.on("connection", (socket) => {
 	console.log("New WebSocket connection:", socket.id);
 
 	// Handle the 'join-room' event
-	socket.on("join-room", (room) => {
-		console.log(`${socket.id} joined room: ${room}`);
-		socket.join(room); // Join the room
-	});
-
-	  // Listen for join request with inviteCode (room name)
-	  socket.on('joinRoom', (inviteCode) => {
-	    // Check if the room already has 2 people
-	    const roomCount = rooms[inviteCode] || 0;
-
-	    if (roomCount >= 2) {
-	      // If the room is full, notify the user
-	      socket.emit('roomFull', `Room ${inviteCode} is already full.`);
-	    } else {
-	      // If the room is not full, add the user to the room
-	      socket.join(inviteCode);
-	      rooms[inviteCode] = roomCount + 1; // Increment the number of users in the room
-	      console.log(`User joined room ${inviteCode}`);
-
-	      // Notify the user that they joined successfully
-	      socket.emit('joinedRoom', `Successfully joined room ${inviteCode}`);
+	  socket.on("join-room", (room) => {
+	    if (!rooms[room]) {
+	      rooms[room] = new Set(); // Initialize the room if it doesn't exist
 	    }
-	  });
 
-	  // // Listen for disconnect events to remove users from the room
-	  // socket.on('disconnect', () => {
-	  //   console.log('A user disconnected');
-	  //   // Loop through the rooms to decrement user count
-	  //   for (let room in rooms) {
-	  //     if (io.sockets.adapter.rooms.get(room)?.has(socket.id)) {
-	  //       rooms[room] -= 1; // Decrease the count of users in the room
-	  //     }
-	  //   }
-	  // });
+	    // Check if the room already has 2 clients
+	    if (rooms[room].size >= 2) {
+	      socket.emit("room-full", `Room ${room} is full.`);
+	      console.log(`Room ${room} is full. Connection denied for ${socket.id}`);
+	      return;
+	    }
+
+	    // Add the socket to the room and join it
+	    rooms[room].add(socket.id);
+	    socket.join(room);
+	    console.log(`${socket.id} joined room: ${room}`);
+	    socket.emit("room-joined", `Successfully joined room: ${room}`);
+
+	    // Notify all clients in the room if it's now full (second user joined)
+	    if (rooms[room].size === 2) {
+	      io.to(room).emit("second-user-joined", `A second user has joined room: ${room}`);
+	    }
+
+	    // Handle disconnect to remove the client from the room
+	    socket.on("disconnect", () => {
+	      rooms[room].delete(socket.id);
+	      if (rooms[room].size === 0) {
+	        delete rooms[room]; // Clean up empty rooms
+	      }
+	      console.log(`${socket.id} disconnected from room: ${room}`);
+	    });
+	  });
 });

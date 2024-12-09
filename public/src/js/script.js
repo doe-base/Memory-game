@@ -39,31 +39,6 @@ hostAFriendBtn.addEventListener("click", (e)=>{
     inviteLinkQuote.style.display = 'block'
 })
 
-window.addEventListener('popstate', function () {
-  const currentPath = window.location.pathname;
-
-  // Regular expression to match '/join/:inviteCode'
-  const match = currentPath.match(/^\/join\/([^/]+)$/);
-
-   if (match) {
-    const inviteCode = match[1]; // Get the inviteCode from the URL
-    console.log(`Invite code: ${inviteCode}`);
-    
-    // Send request to the server to join the room
-    socket.emit('joinRoom', inviteCode);
-
-    // Listen for the server response
-    socket.on('roomFull', (message) => {
-      alert(message); // Notify the user that the room is full
-    });
-
-    socket.on('joinedRoom', (message) => {
-      alert(message); // Notify the user that they joined successfully
-    });
-  }``
-});
-
-
 
 // Game Data  
 let gameData = [
