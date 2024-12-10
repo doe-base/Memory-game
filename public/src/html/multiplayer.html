@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1 V 1 Memory Game</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+</head>
+<body>
+    
+
+    <section id="game-info">
+        <h1>1 V 1 Memory Game</h1>
+        <div class="game-info">
+            <div class="count-1">Player1: <span>0</span></div>
+            
+            <div class="count-2">Player2: <span>0</span></div>
+        </div>
+    </section>
+
+    <section id="game-option">
+        <h3>Connect with a friend to start playing👇</h3>
+
+        <button id="startGameBtn" class="start-game-btn" disabled="true">Start Game</button>
+
+        <div style="display: flex; flex-wrap: wrap; width: 100%; justify-content: space-evenly; margin-top: 2rem;">
+            <button id="hostAFriendBtn" style="margin-top: 0.7rem; padding: 0 0.4rem;">Host a friend</button>
+            <!-- <button id="joinAFriendBtn" style="margin-top: 0.7rem; padding: 0 0.4rem;">Join a friend</button> -->
+        </div>
+    </section>
+    <blockquote id="inviteLinkQuote" style="font-family: Arial, sans-serif; font-size: 16px; color: #555; border-left: 4px solid rgb(172, 124, 248); padding: 10px 15px; margin: 20px 0; background-color: #f9f9f9; display: none;">
+        Share this link with your friend to invite them to join: <span id="inviteLinkSpan" style="font-weight: bold; text-decoration: underline; cursor: pointer;"></span>
+    </blockquote>
+    
+    
+
+
+
+    <section id="game-game" class="display-none">
+        <div id="game-grid-container">
+        </div>
+
+        <button id="homeBtn" style="margin-top: 1.7rem;">Home</button>
+    </section>
+
+    <section id="game-ended" class="display-none">
+        <h1>Congrats! You've Finished!✨</h1>
+        <p>Time taken: <span id="item-taken"></span></p>
+        <p>Card flips: <span id="card-flips"></span></p>
+
+        <button id="play-again-btn">Play again</button>
+    </section>
+
+    <!-- <script src="../js/script.js"></script> -->
+</body>
+</html>

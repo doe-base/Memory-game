@@ -7,7 +7,6 @@ const io = require("socket.io")(3000, {
 
 
 const rooms = {};
-// Handle WebSocket connections
 io.on("connection", (socket) => {
 	console.log("New WebSocket connection:", socket.id);
 
@@ -32,8 +31,27 @@ io.on("connection", (socket) => {
 
 	    // Notify all clients in the room if it's now full (second user joined)
 	    if (rooms[room].size === 2) {
-	      io.to(room).emit("second-user-joined", `A second user has joined room: ${room}`);
+	      const clientIds = Array.from(rooms[room]); // Get IDs of all clients in the room
+	      const host = clientIds[0]; // First client to join
+	      const friend = clientIds[1]; // Second client to join
+
+	          // Notify the host to start the game
+			  io.to(host).emit("prompt-start-game", {
+			    message: "You are the host. Start the game when ready!",
+			    players: { host, friend },
+			  });
+
+			  // Notify the friend to wait
+			  io.to(friend).emit("wait-for-start", {
+			    message: "Waiting for the host to start the game...",
+			  });
 	    }
+
+    	  socket.on("start-game", (room) => {
+			console.log('God abeg', room)
+            console.log(`Game started in room: ${room}`);
+            io.to(room).emit("game-started", "The game has started!");
+	      });
 
 	    // Handle disconnect to remove the client from the room
 	    socket.on("disconnect", () => {

@@ -1,126 +1,86 @@
-import { io } from "socket.io-client"
 import '../css/style.css';
-
-
-function generateRandomString(length = 16) {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-        const randomIndex = Math.floor(Math.random() * chars.length);
-        result += chars[randomIndex];
-    }
-    return result;
-}
-const serverUrl = "http://localhost:3000"
-const clientUrl = "http://localhost:8080"
-const socket = io(serverUrl)
-const createRoom = generateRandomString()
-
-let hostAFriendBtn = document.getElementById('hostAFriendBtn')
-let inviteLinkSpan = document.getElementById('inviteLinkSpan')
-let inviteLinkQuote = document.getElementById('inviteLinkQuote')
-inviteLinkSpan.addEventListener("click", (e) => {
-    const textToCopy = e.target.innerText;
-
-    navigator.clipboard.writeText(textToCopy)
-        .then(() => {
-            alert("Link copied to clipboard!");
-        })
-        .catch(err => {
-            console.error("Failed to copy text: ", err);
-            alert("Failed to copy the link. Please try again.");
-        });
-});
-
-hostAFriendBtn.addEventListener("click", (e)=>{
-    socket.emit("join-room", createRoom)
-
-    inviteLinkSpan.innerText = `${clientUrl}/join.html?inviteCode=${createRoom}`
-    inviteLinkQuote.style.display = 'block'
-})
-
 
 // Game Data  
 let gameData = [
     {
         id: 1,
         name: 'Ae',
-        src: './images/Ae.png' 
+        src: 'Ae.png' 
     },
     {
         id: 2,
         name: 'Ai',
-        src: './images/Ai.png' 
+        src: 'Ai.png' 
     },
     {
         id: 3,
         name: 'An',
-        src: './images/An.png' 
+        src: 'An.png' 
     },
     {
         id: 4,
         name: 'Id',
-        src: './images/Id.png' 
+        src: 'Id.png' 
     },
     {
         id: 5,
         name: 'Lr',
-        src: './images/Lr.png' 
+        src: 'Lr.png' 
     },
     {
         id: 6,
         name: 'Pr',
-        src: './images/Pr.png' 
+        src: 'Pr.png' 
     },
     {
         id: 7,
         name: 'Ps',
-        src: './images/Ps.png' 
+        src: 'Ps.png' 
     },
     {
         id: 8,
         name: 'Xd',
-        src: './images/Xd.png' 
+        src: 'Xd.png' 
     },
     {
         id: 9,
         name: 'Ae',
-        src: './images/Ae.png' 
+        src: 'Ae.png' 
     },
     {
         id: 10,
         name: 'Ai',
-        src: './images/Ai.png' 
+        src: 'Ai.png' 
     },
     {
         id: 11,
         name: 'An',
-        src: './images/An.png' 
+        src: 'An.png' 
     },
     {
         id: 12,
         name: 'Id',
-        src: './images/Id.png' 
+        src: 'Id.png' 
     },
     {
         id: 13,
         name: 'Lr',
-        src: './images/Lr.png' 
+        src: 'Lr.png' 
     },
     {
         id: 14,
         name: 'Pr',
-        src: './images/Pr.png' 
+        src: 'Pr.png' 
     },
     {
         id: 15,
         name: 'Ps',
-        src: './images/Ps.png' 
+        src: 'Ps.png' 
     },
     {
         id: 16,
         name: 'Xd',
-        src: './images/Xd.png' 
+        src: 'Xd.png' 
     }
 ].sort((a, b) => 0.5 - Math.random())
 let gameData2 = [
@@ -128,54 +88,54 @@ let gameData2 = [
     {
         id: 2,
         name: 'An',
-        src: './images/An.png' 
+        src: 'An.png' 
     },
     {
         id: 3,
         name: 'Ps',
-        src: './images/Ps.png' 
+        src: 'Ps.png' 
     },
     {
         id: 4,
         name: 'Xd',
-        src: './images/Xd.png' 
+        src: 'Xd.png' 
     },
     {
         id: 6,
         name: 'An',
-        src: './images/An.png' 
+        src: 'An.png' 
     },
     {
         id: 7,
         name: 'Ps',
-        src: './images/Ps.png' 
+        src: 'Ps.png' 
     },
     {
         id: 8,
         name: 'Xd',
-        src: './images/Xd.png' 
+        src: 'Xd.png' 
     }
 ].sort((a, b) => 0.5 - Math.random())
 let gameData3 = [
     {
         id: 1,
         name: 'Ae',
-        src: './images/Ae.png' 
+        src: 'Ae.png' 
     },
     {
         id: 2,
         name: 'Ps',
-        src: './images/Ps.png' 
+        src: 'Ps.png' 
     },
     {
         id: 3,
         name: 'Ae',
-        src: './images/Ae.png' 
+        src: 'Ae.png' 
     },
     {
         id: 4,
         name: 'Ps',
-        src: './images/Ps.png' 
+        src: 'Ps.png' 
     },
 ].sort((a, b) => 0.5 - Math.random())
 
@@ -234,42 +194,44 @@ startBtns.forEach(btn =>{
 })
 
 
+
 //Start Game Function
 function startGame(){
     // Dynamiclly reder the photo-card el
     const gameLayOut = userChoise.map((item) => {
     return `
-        <div  class="item hide" id="${item.name}" onClick={setCardFlips(event)} lang="${item.id}">
-            <img src="${item.src}"  id="${item.id}"/>
+        <div  class="item hide" id="${item.name}" onclick="setCardFlips(event)" lang="${item.id}">
+            <img src="${require(`../assets/images/${item.src}`)}"  id="${item.id}"/>
         </div>
     `
-}).join('')
-gridContainerEl.innerHTML = gameLayOut
-itemEl = document.querySelectorAll('.item')
-itemEl.forEach(item => {
-    item.addEventListener('click', (e)=>{
-        if(!timeStarted){
-            timer()
-            timeStarted = true
-        }
-        openCard(e)
-        checker()
-        closeCards()
-    })
-})
-}
-
-
-
-const setCardFlips = (e) =>{  
-    if(numItemsOpen.size < 2){
-        itemEl.forEach(item=>{
-            !item.classList.contains('active') && item.lang == e.target.lang ? cardFlips++ : null
-            document.querySelector(".count").innerHTML = cardFlips
+    }).join('')
+    gridContainerEl.innerHTML = gameLayOut
+    itemEl = document.querySelectorAll('.item')
+    itemEl.forEach(item => {
+        item.addEventListener('click', (e)=>{
+            if(!timeStarted){
+                timer()
+                timeStarted = true
+            }
+            openCard(e)
+            checker()
+            closeCards()
         })
-    }
+    })
 }
 
+
+
+window.setCardFlips = (e) => {  
+    if (numItemsOpen.size < 2) {
+        itemEl.forEach(item => {
+            if (!item.classList.contains('active') && item.lang === e.target.lang) {
+                cardFlips++;
+            }
+            document.querySelector(".count").innerHTML = cardFlips;
+        });
+    }
+};
 const timer = () => {
        myInterval = setInterval(()=>{
             timeSec++

@@ -12,13 +12,17 @@ button{
     font-family: "Roboto", sans-serif;
 }
 section{
-    width: fit-content;
+    width: 100%;
+    max-width: 350px;
     margin: 0 auto;
+    text-align: center;
 }
 
 .game-info{
+    width: 100%;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .byfours{
