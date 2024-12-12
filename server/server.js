@@ -92,6 +92,7 @@ function checkMatchingTempOpen(gameDataArr) {
   return false;
 }
 function updateTempOpen(gameDataArr, currentTurn) {
+	console.log(currentTurn)
   let tempOpenCards = gameDataArr.filter(card => card.isTempOpen);
 
   if (tempOpenCards.length === 2 && tempOpenCards[0].name === tempOpenCards[1].name) {
@@ -210,7 +211,7 @@ io.on("connection", (socket) => {
 					const doTheyMatch = checkMatchingTempOpen(multiplayerGameData)
 
 					if(doTheyMatch){
-						multiplayerGameData = updateTempOpen(multiplayerGameData)
+						multiplayerGameData = updateTempOpen(multiplayerGameData, currentTurn)
 
 						io.emit("update-game-state", multiplayerGameData);
 

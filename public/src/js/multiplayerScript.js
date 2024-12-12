@@ -6,6 +6,9 @@ let itemEl;
 const gridContainerEl = document.getElementById('game-grid-container')
 const gameOption = document.getElementById('game-option')
 const gameGameEl = document.getElementById('game-game')
+const count1 = document.getElementById('count-1')
+const count2 = document.getElementById('count-2')
+
 
 function changePage(){
     if(gameStarted){
@@ -32,6 +35,10 @@ function startGame(){
     })
 }
 
+function updateScores(data){
+	count1.innerText = data.home / 2
+	count2.innerText = data.friend / 2
+}
 function updateUI(){
 	const gameLayOut = gameData.map((item) => {
     return `
@@ -41,6 +48,19 @@ function updateUI(){
     `
     }).join('')
     gridContainerEl.innerHTML = gameLayOut
+}
+function countDiscoveredByPlayer(gameDataArr) {
+  const playerCounts = { home: 0, friend: 0 }; 
+
+  gameDataArr.forEach(card => {
+    if (card.isDiscovered && card.discoveredByPlayer === 'home') {
+      playerCounts.home++;
+    } else if (card.isDiscovered && card.discoveredByPlayer === 'friend') {
+      playerCounts.friend++;
+    }
+  });
+
+  return playerCounts;
 }
 
 
@@ -88,6 +108,9 @@ const MuliplayerGameMode =(socket)=>{
 	}
 	socket.on("update-game-state", (multiplayerGameData) => {
 		gameData = multiplayerGameData
+		const data = countDiscoveredByPlayer(multiplayerGameData)
+		console.log(multiplayerGameData)
+		updateScores(data)
 		updateUI()
 	})
 	socket.on("turn-update", (data) => {
