@@ -13,9 +13,9 @@
     <section id="game-info">
         <h1>1 V 1 Memory Game</h1>
         <div class="game-info">
-            <div class="count-1">Player1: <span id="count-1">0</span></div>
+            <div class="count-1">Home: <span id="count-1">0</span></div>
             
-            <div class="count-2">Player2: <span id="count-2">0</span></div>
+            <div class="count-2">Guess: <span id="count-2">0</span></div>
         </div>
     </section>
 
@@ -45,9 +45,10 @@
     </section>
 
     <section id="game-ended" class="display-none">
-        <h1>Congrats! You've Finished!✨</h1>
-        <p>Time taken: <span id="item-taken"></span></p>
-        <p>Card flips: <span id="card-flips"></span></p>
+        <h1 id="playerNameEl"></h1>
+        
+        <p>Home: <span id="home-final"></span></p>
+        <p>Guess: <span id="guess-final"></span></p>
 
         <button id="play-again-btn">Play again</button>
     </section>

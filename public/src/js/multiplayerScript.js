@@ -4,13 +4,16 @@ let yourTurn = false
 let gameStarted = false
 let gameEnded = false
 let itemEl;
+const gameInfo = document.getElementById('game-info')
 const gameEndedEl = document.getElementById('game-ended')
 const gridContainerEl = document.getElementById('game-grid-container')
 const gameOption = document.getElementById('game-option')
 const gameGameEl = document.getElementById('game-game')
 const count1 = document.getElementById('count-1')
 const count2 = document.getElementById('count-2')
-
+const playerNameEl = document.getElementById('playerNameEl')
+const homeFinal = document.getElementById('home-final')
+const guessFinal = document.getElementById('guess-final')
 
 function changePage(){
     if(gameStarted){
@@ -68,6 +71,10 @@ function GameOver(data) {
 	gameStarted = false
     gameEnded = true
 
+    homeFinal.innerText = data.home / 2
+	guessFinal.innerText = data.friend / 2
+	playerNameEl.innerText = data.home > data.friend ? `Congrats! home, You've Won!✨` : data.friend > data.home ? `Good job! guest, You've Won!✨` : data.friend === data.home ? `Congrats y'all, Its a draw!✨` : null
+	
     gameGameEl.classList.add('display-none')
     gameEndedEl.classList.remove('display-none')
     gameInfo.classList.add('display-none')
