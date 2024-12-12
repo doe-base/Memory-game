@@ -1,7 +1,48 @@
+let gameData = []
+let yourTurn = false
 
-let hostAFriendBtn = document.getElementById('hostAFriendBtn')
-let inviteLinkQuote = document.getElementById('inviteLinkQuote')
-let startGameBtn = document.getElementById('startGameBtn')
+let gameStarted = false
+let itemEl;
+const gridContainerEl = document.getElementById('game-grid-container')
+const gameOption = document.getElementById('game-option')
+const gameGameEl = document.getElementById('game-game')
+
+function changePage(){
+    if(gameStarted){
+        gameOption.classList.add('display-none')
+        gameGameEl.classList.remove('display-none')
+    }
+}
+
+function startGame(){
+    // Dynamiclly reder the photo-card el
+    const gameLayOut = gameData.map((item) => {
+    return `
+        <div class="item hide" id="${item.name}" onclick="setCardFlips(event)" lang="${item.id}">
+            <img src="${require(`../assets/images/Cartoon/${item.src}`)}" style="width: 100%;"  id="${item.id}"/>
+        </div>
+    `
+    }).join('')
+    gridContainerEl.innerHTML = gameLayOut
+    itemEl = document.querySelectorAll('.item')
+    itemEl.forEach(item => {
+        item.addEventListener('click', (e)=>{
+            
+        })
+    })
+}
+
+function updateUI(){
+	const gameLayOut = gameData.map((item) => {
+    return `
+        <div  class="item ${item.isDiscovered == false && item.isTempOpen == false ? 'hide' : ''}" id="${item.name}" ${item.isDiscovered == false && yourTurn ? `onclick="setCardFlips(event)"` : null}  lang="${item.id}">
+            <img src="${require(`../assets/images/Cartoon/${item.src}`)}" style="width: 100%;"  id="${item.id}"/>
+        </div>
+    `
+    }).join('')
+    gridContainerEl.innerHTML = gameLayOut
+}
+
 
 const MuliplayerGameMode =(socket)=>{
 	const inviteCode = localStorage.getItem('room')
@@ -30,13 +71,33 @@ const MuliplayerGameMode =(socket)=>{
 
 	    socket.emit("start-game", room);
 	});
-	socket.on("game-started", (message) => {
-    alert(message); // Notify the user
-    // Additional logic to transition to the game screen
-    // document.getElementById("game-info").style.display = "none";
-    // document.getElementById("game-option").style.display = "none";
-    // document.getElementById("game-game").classList.remove("display-none");
-});
+	socket.on("game-started", (multiplayerGameData) => {
+		gameData = multiplayerGameData
+
+	    // Additional logic to transition to the game screen
+    	inviteLinkQuote.style.display = 'none'
+    	gameStarted = true
+        changePage()
+        startGame()
+	});
+
+	window.setCardFlips = (e) => { 
+		var cardClickedId = e.target.lang
+		const data = {cardClickedId}
+		socket.emit("card-flip", data);
+	}
+	socket.on("update-game-state", (multiplayerGameData) => {
+		gameData = multiplayerGameData
+		updateUI()
+	})
+	socket.on("turn-update", (data) => {
+	  yourTurn = data;
+	  updateUI()
+	});
+	socket.on("close-card", (multiplayerGameData) => {
+		gameData = multiplayerGameData
+		updateUI()
+	})
 }
 
 export default MuliplayerGameMode

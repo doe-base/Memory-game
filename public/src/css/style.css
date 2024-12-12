@@ -42,8 +42,8 @@ section{
 }
 
 .item{
-    width: 4.5rem;
-    height: 4.5rem;
+    width: 2.5rem !important;
+    height: 2.5rem !important;
     justify-items: center;
     border: 1px solid black;
     display: flex;
@@ -112,3 +112,12 @@ section{
     display: none !important;
 }
 
+
+.grid-container {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 4 columns */
+    gap: 5px; /* Adjust gap between grid items */
+    /* width: 100%;  Optional: set width for the container */
+    height: auto; /* Optional: adjust height as needed */
+}
