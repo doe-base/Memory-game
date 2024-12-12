@@ -113,7 +113,9 @@ function updateTempOpen(gameDataArr, currentTurn) {
 
   return gameDataArr; // Return the original gameData if no match
 }
-
+function areAllCardsDiscovered(gameDataArr) {
+  return gameDataArr.every(card => card.isDiscovered === true);
+}
 
 
 
@@ -214,6 +216,11 @@ io.on("connection", (socket) => {
 						multiplayerGameData = updateTempOpen(multiplayerGameData, currentTurn)
 
 						io.emit("update-game-state", multiplayerGameData);
+
+						const gameOver = areAllCardsDiscovered(multiplayerGameData)
+						if(gameOver){
+							io.emit("game-over", multiplayerGameData);
+						}
 
 					}else{
 						setTimeout(function(){

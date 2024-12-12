@@ -2,7 +2,9 @@ let gameData = []
 let yourTurn = false
 
 let gameStarted = false
+let gameEnded = false
 let itemEl;
+const gameEndedEl = document.getElementById('game-ended')
 const gridContainerEl = document.getElementById('game-grid-container')
 const gameOption = document.getElementById('game-option')
 const gameGameEl = document.getElementById('game-game')
@@ -62,7 +64,14 @@ function countDiscoveredByPlayer(gameDataArr) {
 
   return playerCounts;
 }
+function GameOver(data) {
+	gameStarted = false
+    gameEnded = true
 
+    gameGameEl.classList.add('display-none')
+    gameEndedEl.classList.remove('display-none')
+    gameInfo.classList.add('display-none')
+}
 
 const MuliplayerGameMode =(socket)=>{
 	const inviteCode = localStorage.getItem('room')
@@ -109,7 +118,6 @@ const MuliplayerGameMode =(socket)=>{
 	socket.on("update-game-state", (multiplayerGameData) => {
 		gameData = multiplayerGameData
 		const data = countDiscoveredByPlayer(multiplayerGameData)
-		console.log(multiplayerGameData)
 		updateScores(data)
 		updateUI()
 	})
@@ -121,6 +129,12 @@ const MuliplayerGameMode =(socket)=>{
 		gameData = multiplayerGameData
 		updateUI()
 	})
+	socket.on("game-over", (multiplayerGameData) => {
+		gameData = multiplayerGameData
+		const data = countDiscoveredByPlayer(multiplayerGameData)
+		GameOver(data)
+	})
+	
 }
 
 export default MuliplayerGameMode
