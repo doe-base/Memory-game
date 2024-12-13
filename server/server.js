@@ -5,58 +5,11 @@ const io = require("socket.io")(3000, {
 })
 
 const rooms = {};
-let host = ''; // First client to join
-let friend = ''; // Second client to join
-let currentTurn = 'home';
+const roomStates = {};
 const roomConnectionIntervals = new Map();
-let multiplayerGameData = [
-    { id: '1', name: 'carte-1', src: 'carte-1.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '2', name: 'carte-2', src: 'carte-2.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '3', name: 'carte-3', src: 'carte-3.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '4', name: 'carte-4', src: 'carte-4.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '5', name: 'carte-5', src: 'carte-5.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '6', name: 'carte-6', src: 'carte-6.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '7', name: 'carte-7', src: 'carte-7.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '8', name: 'carte-8', src: 'carte-8.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '9', name: 'carte-9', src: 'carte-9.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '10', name: 'carte-10', src: 'carte-10.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '11', name: 'carte-11', src: 'carte-11.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '12', name: 'carte-12', src: 'carte-12.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '13', name: 'carte-13', src: 'carte-13.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '14', name: 'carte-14', src: 'carte-14.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '15', name: 'carte-15', src: 'carte-15.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '16', name: 'carte-16', src: 'carte-16.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '17', name: 'carte-17', src: 'carte-17.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '18', name: 'carte-18', src: 'carte-18.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '19', name: 'carte-19', src: 'carte-19.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '20', name: 'carte-20', src: 'carte-20.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '21', name: 'carte-1', src: 'carte-1.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '22', name: 'carte-2', src: 'carte-2.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '23', name: 'carte-3', src: 'carte-3.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '24', name: 'carte-4', src: 'carte-4.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '25', name: 'carte-5', src: 'carte-5.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '26', name: 'carte-6', src: 'carte-6.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '27', name: 'carte-7', src: 'carte-7.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '28', name: 'carte-8', src: 'carte-8.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '29', name: 'carte-9', src: 'carte-9.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '30', name: 'carte-10', src: 'carte-10.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '31', name: 'carte-11', src: 'carte-11.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '32', name: 'carte-12', src: 'carte-12.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '33', name: 'carte-13', src: 'carte-13.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '34', name: 'carte-14', src: 'carte-14.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '35', name: 'carte-15', src: 'carte-15.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '36', name: 'carte-16', src: 'carte-16.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '37', name: 'carte-17', src: 'carte-17.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '38', name: 'carte-18', src: 'carte-18.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '39', name: 'carte-19', src: 'carte-19.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
-    { id: '40', name: 'carte-20', src: 'carte-20.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: ''  }
-].sort((a, b) => 0.5 - Math.random())
 
-function backToDefault(){
-	host = ''; // First client to join
-	friend = ''; // Second client to join
-	currentTurn = 'home';
-	multiplayerGameData = [
+function createNewGameData() {
+	return [
 	    { id: '1', name: 'carte-1', src: 'carte-1.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
 	    { id: '2', name: 'carte-2', src: 'carte-2.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
 	    { id: '3', name: 'carte-3', src: 'carte-3.gif', isTempOpen: false, isDiscovered: false, discoveredByPlayer: '' },
@@ -100,14 +53,22 @@ function backToDefault(){
 	].sort((a, b) => 0.5 - Math.random())
 }
 
-function switchTurns(io, host, friend) {
-  if (currentTurn === 'home') {
-    currentTurn = 'friend';
+function backToDefault(room){
+	roomStates[room] = {
+    host: '',
+    friend: '',
+    currentTurn: 'home',
+    gameData: createNewGameData(),
+  };
+}
+function switchTurns(io, room, host, friend) {
+  if (roomStates[room].currentTurn === 'home') {
+    roomStates[room].currentTurn = 'friend';
 
       io.to(host).emit("turn-update", false);
   	  io.to(friend).emit("turn-update", true);
   } else {
-    currentTurn = 'home';
+    roomStates[room].currentTurn = 'home';
 
       io.to(host).emit("turn-update", true);
   	  io.to(friend).emit("turn-update", false);
@@ -142,7 +103,6 @@ function checkMatchingTempOpen(gameDataArr) {
 }
 // Update the data if they match
 function updateTempOpen(gameDataArr, currentTurn) {
-	console.log(currentTurn)
   let tempOpenCards = gameDataArr.filter(card => card.isTempOpen);
 
   if (tempOpenCards.length === 2 && tempOpenCards[0].name === tempOpenCards[1].name) {
@@ -177,6 +137,8 @@ function testConnection(testRoom){
 
 			io.to(clientLeft).emit("connection-broken");
 
+			delete rooms[testRoom];
+
 	    if (roomConnectionIntervals.has(testRoom)) {
 		    clearInterval(roomConnectionIntervals.get(testRoom));
 		    roomConnectionIntervals.delete(testRoom);
@@ -189,7 +151,7 @@ function testConnection(testRoom){
 
 // Entry Function
 io.on("connection", (socket) => {
-	console.log("New WebSocket connection:", socket.id);
+	// console.log("New WebSocket connection:", socket.id);
 
 // HANDLE CONNECTION
 	  socket.on("join-room", ({roomCode, type}) => {
@@ -201,39 +163,47 @@ io.on("connection", (socket) => {
 		    }
 	  	}
 	    if (!rooms[room]) {
-	      rooms[room] = new Set(); // Initialize the room if it doesn't exist
+	      rooms[room] = new Set();
+	      roomStates[room] = {
+	        host: '',
+	        friend: '',
+	        currentTurn: 'home',
+	        gameData: createNewGameData(),
+	      };
 	    }
 
 	    // Check if the room already has 2 clients
 	    if (rooms[room].size >= 2) {
-	      socket.emit("room-full", `Room ${room} is full.`);
-	      console.log(`Room ${room} is full. Connection denied for ${socket.id}`);
+	      io.to(room).emit("room-full", `Room ${room} is full.`);
 	      return;
 	    }
 
 	    // Add the socket to the room and join it
 	    rooms[room].add(socket.id);
 	    socket.join(room);
-	    console.log(`${socket.id} joined room: ${room}`);
-	    socket.emit("room-joined", `Successfully joined room: ${room}`);
+	    io.to(room).emit("room-joined", `Successfully joined room: ${room}`);
 
 	    // Notify all clients in the room if it's now full (second user joined)
 	    if (rooms[room].size === 2) {
 	      const clientIds = Array.from(rooms[room]);
-	      host = clientIds[0];
-	      friend = clientIds[1];
-	          // Notify the host to start the game
-			  io.to(host).emit("prompt-start-game", {
+	      roomStates[room].host =clientIds[0];
+	      roomStates[room].friend =clientIds[1];
+
+	      // Notify the host to start the game
+			  io.to(roomStates[room].host).emit("prompt-start-game", {
 			    message: "You are the host. Start the game when ready!",
-			    players: { host, friend },
+			    players: { host: roomStates[room].host, friend: roomStates[room].friend },
 			    role: "host",
 			  });
 
 			  // Notify the friend to wait
-			  io.to(friend).emit("wait-for-start", {
+			  io.to(roomStates[room].friend).emit("wait-for-start", {
 			    message: "Waiting for the host to start the game...",
 			    role: "guest",
 			  });
+
+			  const intervalId = setInterval(() => testConnection(room), 3000);
+  			roomConnectionIntervals.set(room, intervalId);
 	    }
 
 
@@ -241,35 +211,34 @@ io.on("connection", (socket) => {
 
     	  socket.on("start-game", (room) => {
     	  	  const clientIds = Array.from(rooms[room]);
-		      	host = clientIds[0];
-						friend = clientIds[1];
+			      roomStates[room].host =clientIds[0];
+			      roomStates[room].friend =clientIds[1];
 
-            	io.to(room).emit("game-started", multiplayerGameData);
+            	io.to(room).emit("game-started", roomStates[room].gameData);
 
-				      currentTurn = 'home';
+				      roomStates[room].currentTurn = 'home';
 
-				      io.to(host).emit("turn-update", true);
-				  	  io.to(friend).emit("turn-update", false);
-
-				  	  const intervalId = setInterval(() => testConnection(room), 3000);
-  						roomConnectionIntervals.set(room, intervalId);
+				      io.to(roomStates[room].host =clientIds[0]).emit("turn-update", true);
+				  	  io.to(roomStates[room].friend).emit("turn-update", false);
 		    });
 
 		    socket.on("card-flip", (data) => {
 					    // Get the card that was clicked
-					    const cardClicked = multiplayerGameData.find(
+					    const cardClicked = roomStates[room].gameData.find(
 					        (card) => card.id === data.cardClickedId
 					    );
 
+
+
 					    if (!cardClicked) {
 					        // Card not found
-					        socket.emit("error", { message: "Invalid card ID!" });
+					        io.to(room).emit("error", { message: "Invalid card ID!" });
 					        return;
 					    }
 
 					    // If the card is already discovered, ignore the flip
 					    if (cardClicked.isDiscovered) {
-					        socket.emit("error", { message: "Card already discovered!" });
+					        io.to(room).emit("error", { message: "Card already discovered!" });
 					        return;
 					    }
 
@@ -277,35 +246,36 @@ io.on("connection", (socket) => {
 					    cardClicked.isTempOpen = true;
 
 					    // Emit the updated game state to all clients
-					    io.emit("update-game-state", multiplayerGameData);
+					    io.to(room).emit("update-game-state", roomStates[room].gameData);
 
 
-							const isMultipleTempOpen = checkMultipleTempOpen(multiplayerGameData)
+							const isMultipleTempOpen = checkMultipleTempOpen(roomStates[room].gameData)
 
 							if(isMultipleTempOpen){
-								const doTheyMatch = checkMatchingTempOpen(multiplayerGameData)
+								const doTheyMatch = checkMatchingTempOpen(roomStates[room].gameData)
 
 								if(doTheyMatch){
-									multiplayerGameData = updateTempOpen(multiplayerGameData, currentTurn)
+									roomStates[room].gameData = updateTempOpen(roomStates[room].gameData, roomStates[room].currentTurn)
 
-									io.emit("update-game-state", multiplayerGameData);
+									io.to(room).emit("update-game-state", roomStates[room].gameData);
 
-									const gameOver = areAllCardsDiscovered(multiplayerGameData)
+									const gameOver = areAllCardsDiscovered(roomStates[room].gameData)
 									if(gameOver){
-										io.emit("game-over", multiplayerGameData);
+										io.to(room).emit("game-over", roomStates[room].gameData);
 									}
 
 								}else{
 									setTimeout(function(){
-										multiplayerGameData = resetTempOpen(multiplayerGameData)
+										roomStates[room].gameData = resetTempOpen(roomStates[room].gameData)
 
-										io.emit("update-game-state", multiplayerGameData);
+										io.to(room).emit("update-game-state", roomStates[room].gameData);
 
 										const clientIds = Array.from(rooms[room]);
-										host = clientIds[0];
-										friend = clientIds[1];
+							      roomStates[room].host =clientIds[0];
+							      roomStates[room].friend =clientIds[1];
 
-										switchTurns(io, host, friend)
+
+										switchTurns(io, room, roomStates[room].host, roomStates[room].friend)
 						        	},600)
 								}
 							}
@@ -313,8 +283,8 @@ io.on("connection", (socket) => {
 
     	  socket.on("end-game", (room) => {
     	  	  const clientIds = Array.from(rooms[room]);
-		      	host = clientIds[0];
-						friend = clientIds[1];
+			      roomStates[room].host =clientIds[0];
+			      roomStates[room].friend =clientIds[1];
 
             	io.to(room).emit("game-ended");
 
@@ -325,14 +295,16 @@ io.on("connection", (socket) => {
 		    });
 
 		    socket.on("restart-game", (room) => {
-		    			backToDefault()
-            	io.to(room).emit("game-started", multiplayerGameData);
+		    			backToDefault(room)
+            	io.to(room).emit("game-started", roomStates[room].gameData);
 		    });
 
 
 			    // Handle disconnect to remove the client from the room
 			    socket.on("disconnect", () => {
-			      rooms[room].delete(socket.id);
+			    	if(rooms[room]){
+			    		rooms[room].delete(socket.id);
+			    	}
 			      if (rooms[room].size === 0) {
 			        delete rooms[room]; // Clean up empty rooms
 			      }
