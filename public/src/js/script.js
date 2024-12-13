@@ -139,7 +139,7 @@ let gameData3 = [
     },
 ].sort((a, b) => 0.5 - Math.random())
 
-
+const linkHolderEl = document.getElementById('linkHolderEl')
 const gridContainerEl = document.getElementById('game-grid-container')
 const gameInfo = document.getElementById('game-info')
 const gameOption = document.getElementById('game-option')
@@ -298,6 +298,7 @@ function changePage(){
     if(gameStarted){
         gameOption.classList.add('display-none')
         gameGameEl.classList.remove('display-none')
+        linkHolderEl.classList.add('display-none')
     }
 }
 
@@ -325,7 +326,7 @@ const playAgain = () =>{
     gameEndedEl.classList.add('display-none')
     gameInfo.classList.remove('display-none')
     gameOption.classList.remove('display-none')
-    
+    linkHolderEl.classList.remove('display-none')
 
     document.querySelector('.count').innerHTML = 0
     secOptionalEl.innerHTML = 0
@@ -343,6 +344,7 @@ homeBtn.addEventListener('click', ()=>{
     gameInfo.classList.remove('display-none')
     gameOption.classList.remove('display-none')
     gameGameEl.classList.add('display-none')
+    linkHolderEl.classList.remove('display-none')
 
     clearInterval(myInterval)
     cardFlips = 0

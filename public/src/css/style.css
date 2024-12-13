@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
 body{
     font-family: "Roboto", sans-serif;
     width: 100%;
@@ -11,6 +17,31 @@ body{
 button{
     font-family: "Roboto", sans-serif;
 }
+button#homeBtn {
+  background-color: #F4F4F4; /* Light gray for a subtle contrast */
+  color: #333333; /* Dark gray text */
+  border: 1px solid #DDDDDD; /* Light gray border */
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button#homeBtn:hover {
+  background-color: #E0E0E0; /* Darker gray for hover effect */
+  color: #000000; /* Slightly darker text */
+}
+
+button#homeBtn:disabled {
+  background-color: #F9F9F9; /* Very light gray */
+  color: #AAAAAA; /* Muted gray for text */
+  border: 1px solid #EEEEEE; /* Very light gray border */
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+
 section{
     width: 100%;
     max-width: 350px;
@@ -24,36 +55,49 @@ section{
     justify-content: space-between;
     flex-wrap: wrap;
 }
+.title-header h1{
+    margin: 1rem 0;
+}
 
 .byfours{
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 4px;
+    margin-top: 1rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7.5px;
+      width: 100%;
+      height: auto;
+      justify-items: center;
+      align-items: center;
 }
 .bythrees{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 4px;
+   margin-top: 1rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7.5px;
+      width: 100%;
+      height: auto;
+      justify-items: center;
+      align-items: center;
 }
 .bytwos{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 4px;
+    margin-top: 1rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 7.5px;
+      width: 100%;
+      height: auto;
+      justify-items: center;
+      align-items: center;
 }
 
 .item{
-    width: 2.5rem !important;
-    height: 2.5rem !important;
+    width: 100% !important;
+    aspect-ratio: 1 / 1 !important;
     justify-items: center;
     border: 1px solid black;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.byfours > .item{
-    width: 2.7rem;
-    height: 2.7rem;
 }
 
 .hide:hover{
@@ -73,15 +117,19 @@ section{
 /* game-option */
 
 #game-option{
-    width: 90%;
-    max-width: 300px;
+    width: 95%;
+    max-width: 350px;
     margin: 0 auto;
     padding: 1rem 1rem;
-    background-color: rgb(172, 124, 248);
+    background-color: #121212;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    border-radius: 10px;
+}
+#game-option h3{
+    color: #E0E0E0;
 }
 
 #game-option > button{
@@ -90,34 +138,73 @@ section{
     font-weight: 700;
 }
 
+#game-option > button, #hostAFriendBtn, #game-ended > button {
+  background-color: #1F1F1F; /* Slightly lighter black */
+  color: #E0E0E0; /* Light gray */
+  border: 2px solid #E0E0E0; /* Light gray border */
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#game-option > button:hover, #hostAFriendBtn:hover, #game-ended > button:hover {
+  background-color: #E0E0E0; /* Light gray on hover */
+  color: #121212; /* Dark text on hover */
+  border-color: #E0E0E0;
+}
+
+#game-option > button:disabled, #hostAFriendBtn:disabled, #game-ended > button:hover {
+  background-color: #555555; /* Muted gray */
+  color: #9E9E9E; /* Lighter gray for text */
+  cursor: not-allowed; /* Indicates the button is not interactive */
+  opacity: 0.6; /* Slight transparency */
+}
+
+
 #game-ended{
-    width: 90%;
-    max-width: 300px;
+    width: 95%;
+    max-width: 350px;
     margin: 0 auto;
-    padding: 0.5rem 1rem;
-    background-color: rgb(172, 124, 248);
+    padding: 1rem 1rem;
+    background-color: #121212;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    color: #E0E0E0;
+}
+
+.grid-container {
+     margin-top: 1rem;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 7.5px;
+      width: 100%;
+      height: auto;
+      justify-items: center;
+      align-items: center;
+}
+
+.link-holder{
+    width: 95%;
+    max-width: 350px;
+    margin: 0 auto;
+    padding: 1rem 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
-
-#game-ended > button{
-    padding: 5px 10px;
-    margin-top: 1rem;
-    font-weight: 700;
+.link-holder a{
+    text-align: center; 
+    text-decoration: underline;
 }
+
 
 .display-none{
     display: none !important;
-}
-
-
-.grid-container {
-    margin-top: 1rem;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 4 columns */
-    gap: 5px; /* Adjust gap between grid items */
-    /* width: 100%;  Optional: set width for the container */
-    height: auto; /* Optional: adjust height as needed */
 }
