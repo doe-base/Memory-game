@@ -49,5 +49,6 @@ To run the game locally:
 - Adding sound effects for card flips and matches.
 - Introducing a leaderboard to track high scores.
 - Expanding multiplayer features with new game modes.
+- Add Offline multiplayer mode with wifi
 
 This project exemplifies advanced problem-solving and modularization skills while providing an engaging experience for players.
