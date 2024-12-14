@@ -1,42 +1,41 @@
-# Memory Game
+# Memory Game V2
 
-The Memory Game is a fun and simple project built using vanilla JavaScript. The goal of the game is to match pairs of cards by remembering their positions. It’s a great way to practice your memory skills while enjoying an engaging game.
-
-This project really show my ablity to modularization software problems.
-
-
+The Memory Game V2 is an enhanced version of the classic card-matching game built using vanilla JavaScript. This update introduces new features, improved gameplay mechanics, and a refined user experience, showcasing advanced modularization and problem-solving abilities.
 
 ## How to Play
 
-    Start the Game: Select a grid to start
-    Match Cards: If the cards match, they remain revealed. If not, they flip back over.
-    Win Condition: The game is won when all card pairs are matched.
-    Reset: You can reset the game to start over at any time.
-
-
+1. **Start the Game:** Select a grid size to begin.
+2. **Match Cards:** Flip two cards at a time. If they match, they stay revealed. If not, they flip back over.
+3. **Win Condition:** Match all card pairs to win the game.
+4. **Reset:** Reset the game at any time to start over.
 
 ## Features
 
-    Interactive card flipping animation
-    Simple, responsive design
-    Timer to track how long it takes to complete the game
-    A counter to track how many filps you made
+- **Dynamic Grid Sizes:** Choose different grid sizes for varying levels of difficulty.
+- **Timer:** Tracks the time it takes to complete the game.
+- **Flip Counter:** Records the number of card flips made during the game.
+- **Enhanced Visual Design:** A more modern and polished interface.
+- **Mobile Responsiveness:** Optimized for all screen sizes, ensuring a seamless experience on any device.
 
+## New Features in V2
 
+- **Multiplayer Mode:** Play against friends in real-time to see who can match all pairs first.
+- **Node.js Server Integration:** The game now includes a Node.js backend for managing multiplayer connections.
+- **Socket.io for Real-Time Communication:** Ensures smooth and instant updates between players during multiplayer matches.
 
 ## Technologies Used
 
-    HTML5 for the structure
-    CSS3 for styling and animations
-    JavaScript (Vanilla) for game logic and interactivity
+- **HTML5:** For the structure of the game.
+- **CSS3:** For improved styling, animations, and responsive design.
+- **JavaScript (Vanilla):** For the game logic and interactive features.
+- **Node.js:** Powers the server-side logic to support multiplayer mode.
+- **Socket.io:** Enables real-time communication for the multiplayer experience.
 
+## Future Improvements
 
+- Interactive Card Flipping Animation: Smooth and engaging animations for flipping cards.
+- Adding sound effects for card flips and matches.
+- Introducing a leaderboard to track high scores.
+- Expanding multiplayer features with new game modes.
 
-## Setup & Installation
-
-To run the game locally:
-    1. Clone the repository
-    2. Open index.html
-
-
-# Starting Version 2
+This project exemplifies advanced problem-solving and modularization skills while providing an engaging experience for players.
