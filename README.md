@@ -31,6 +31,18 @@ The Memory Game V2 is an enhanced version of the classic card-matching game buil
 - **Node.js:** Powers the server-side logic to support multiplayer mode.
 - **Socket.io:** Enables real-time communication for the multiplayer experience.
 
+## Setup & Installation
+
+To run the game locally:
+
+1. Clone the repository.
+2. Navigate to the project public folder.
+3. Install dependencies using `npm install`.
+4. Run `npm run start`
+5. Navigate to the project server folder.
+6. Install dependencies using `npm install`.
+5. Run `npm run devStart`.
+
 ## Future Improvements
 
 - Interactive Card Flipping Animation: Smooth and engaging animations for flipping cards.
