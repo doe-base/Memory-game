@@ -23,6 +23,7 @@ let gameEnded = false
 let itemEl;
 let role = ''
 
+// Game Functions
 function changePage(){
     if(gameStarted){
         gameOption.classList.add('display-none')
@@ -101,7 +102,32 @@ function GameOver(data) {
 const MuliplayerGameMode =(socket)=>{
 	const inviteCode = localStorage.getItem('room')
 
-// Trigger a function when the second user joins the room
+// Socket Emitters
+	startGameBtn.addEventListener("click", () => {
+		const inviteCode = localStorage.getItem('room')
+	    const room = inviteCode;
+
+	    socket.emit("start-game", room);
+	});
+	playAgainBtn.addEventListener("click", ()=>{
+		const inviteCode = localStorage.getItem('room')
+	    const room = inviteCode;
+
+		socket.emit("restart-game", room);
+	})
+	homeBtn.addEventListener("click", ()=>{
+		const inviteCode = localStorage.getItem('room')
+	    const room = inviteCode;
+
+		socket.emit("end-game", room);
+	})
+	window.setCardFlips = (e) => { 
+		var cardClickedId = e.target.lang
+		const data = {cardClickedId}
+		socket.emit("card-flip", data);
+	}
+
+// Socket Responders
 	socket.on("prompt-start-game", (data) => {
 	  inviteLinkQuote.innerHTML = "You are the host. Start the game when ready!"
 	  hostAFriendBtn.style.display = "none"
@@ -113,14 +139,6 @@ const MuliplayerGameMode =(socket)=>{
 	  inviteLinkQuote.innerHTML = "Waiting for the host to start the game..."
 	  hostAFriendBtn.style.display = "none"
 	  role = data.role
-	});
-
-// Start game button
-	startGameBtn.addEventListener("click", () => {
-		const inviteCode = localStorage.getItem('room')
-	    const room = inviteCode;
-
-	    socket.emit("start-game", room);
 	});
 	socket.on("game-started", (multiplayerGameData) => {
 		removeQueryParameter('inviteCode')
@@ -135,13 +153,6 @@ const MuliplayerGameMode =(socket)=>{
         updatePlayerTurn()
         startGame()
 	});
-
-//Card filp function 
-	window.setCardFlips = (e) => { 
-		var cardClickedId = e.target.lang
-		const data = {cardClickedId}
-		socket.emit("card-flip", data);
-	}
 	socket.on("update-game-state", (multiplayerGameData) => {
 		gameData = multiplayerGameData
 		const data = countDiscoveredByPlayer(multiplayerGameData)
@@ -162,24 +173,12 @@ const MuliplayerGameMode =(socket)=>{
 		const data = countDiscoveredByPlayer(multiplayerGameData)
 		GameOver(data)
 	})
-
-	homeBtn.addEventListener("click", ()=>{
-		const inviteCode = localStorage.getItem('room')
-	    const room = inviteCode;
-
-		socket.emit("end-game", room);
-	})
 	socket.on("game-ended", ()=>{
 		window.location.replace("/multiplayer.html");
 	})
 
 
-	playAgainBtn.addEventListener("click", ()=>{
-		const inviteCode = localStorage.getItem('room')
-	    const room = inviteCode;
 
-		socket.emit("restart-game", room);
-	})
 }
 
 export default MuliplayerGameMode
