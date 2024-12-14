@@ -170,7 +170,7 @@ const MuliplayerGameMode =(socket)=>{
 		socket.emit("end-game", room);
 	})
 	socket.on("game-ended", ()=>{
-		window.location.replace("/multiplayer.html")
+		window.location.replace("/multiplayer.html");
 	})
 
 

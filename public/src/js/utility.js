@@ -11,6 +11,7 @@ function generateRandomString(length = 16) {
 // Check if there's an inviteCode in the url and attempt to join room
 const joinRoom =(socket, inviteCode)=>{
     if(inviteCode){
+        localStorage.setItem('room', inviteCode)
         const roomCode = inviteCode
         const type = 'join'
         socket.emit("join-room", {roomCode, type});

@@ -7,6 +7,7 @@ import { generateRandomString, joinRoom, removeQueryParameter } from "./utility.
 const serverUrl = "http://localhost:3000"
 const clientUrl = "http://localhost:8080"
 const socket = io(serverUrl)
+localStorage.removeItem("room");
 
 const urlParams = new URLSearchParams(window.location.search);
 const inviteCode = urlParams.get("inviteCode");
@@ -16,6 +17,7 @@ let hostAFriendBtn = document.getElementById('hostAFriendBtn')
 let inviteLinkSpan = document.getElementById('inviteLinkSpan')
 let inviteLinkQuote = document.getElementById('inviteLinkQuote')
 startGameBtn.disabled = true
+
 
 
 // Attempt To Join a room

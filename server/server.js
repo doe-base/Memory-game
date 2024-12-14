@@ -1,6 +1,9 @@
 const io = require("socket.io")(3000, {
 	cors: {
 		origin: ["http://localhost:8080"],
+		methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true,
 	}
 })
 
@@ -138,6 +141,7 @@ function testConnection(testRoom){
 			io.to(clientLeft).emit("connection-broken");
 
 			delete rooms[testRoom];
+			delete roomStates[testRoom];
 
 	    if (roomConnectionIntervals.has(testRoom)) {
 		    clearInterval(roomConnectionIntervals.get(testRoom));
@@ -286,12 +290,14 @@ io.on("connection", (socket) => {
 			      roomStates[room].host =clientIds[0];
 			      roomStates[room].friend =clientIds[1];
 
-            	io.to(room).emit("game-ended");
+            	delete rooms[room];
+							delete roomStates[room];
 
-            	 if (roomIntervals.has(room)) {
-							    clearInterval(roomIntervals.get(room));
-							    roomIntervals.delete(room);
+							 if (roomConnectionIntervals.has(room)) {
+							    clearInterval(roomConnectionIntervals.get(room));
+							    roomConnectionIntervals.delete(room);
 							 }
+							 io.to(room).emit("game-ended");
 		    });
 
 		    socket.on("restart-game", (room) => {
@@ -304,10 +310,15 @@ io.on("connection", (socket) => {
 			    socket.on("disconnect", () => {
 			    	if(rooms[room]){
 			    		rooms[room].delete(socket.id);
+
+			    		delete rooms[room];
+							delete roomStates[room];
 			    	}
-			      if (rooms[room].size === 0) {
-			        delete rooms[room]; // Clean up empty rooms
-			      }
+
+			    	// if (rooms[room].size === 0) {
+				    //   delete rooms[room]; // Clean up empty rooms
+				    // }
+			      
 			      console.log(`${socket.id} disconnected from room: ${room}`);
 			    });
 
