@@ -38,10 +38,11 @@ To run the game locally:
 1. Clone the repository.
 2. Navigate to the project public folder.
 3. Install dependencies using `npm install`.
-4. Run `npm run start`
-5. Navigate to the project server folder.
-6. Install dependencies using `npm install`.
-5. Run `npm run devStart`.
+4. Run `npm install`
+5. Run `npm run start`
+6. Navigate to the project server folder.
+7. Install dependencies using `npm install`.
+8. Run `npm run devStart`.
 
 ## Future Improvements
 
