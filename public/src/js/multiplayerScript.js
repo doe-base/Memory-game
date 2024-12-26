@@ -54,11 +54,11 @@ function updateScores(data){
 }
 function updateUI(){
 	const gameLayOut = gameData.map((item) => {
-    return `
-        <div  class="item ${item.isDiscovered == false && item.isTempOpen == false ? 'hide' : ''}" id="${item.name}" ${item.isDiscovered == false && yourTurn ? `onclick="setCardFlips(event)"` : null}  lang="${item.id}">
-            <img src="${require(`../assets/images/Cartoon/${item.src}`)}" style="width: 100%;"  id="${item.id}"/>
-        </div>
-    `
+		return `
+			<div  class="item ${item.isDiscovered == false && item.isTempOpen == false ? 'hide' : ''}" id="${item.name}" ${item.isDiscovered == false && yourTurn ? `onclick="setCardFlips(event)"` : null}  lang="${item.id}">
+				<img src="${require(`../assets/images/Cartoon/${item.src}`)}" style="width: 100%;"  id="${item.id}"/>
+			</div>
+		`
     }).join('')
     gridContainerEl.innerHTML = gameLayOut
 }

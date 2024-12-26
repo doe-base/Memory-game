@@ -1,0 +1,14 @@
+# Ignore node_modules in both public and server directories
+/public/node_modules/
+/server/node_modules/
+
+# Ignore the test folder inside the public directory
+/public/test/
+
+# Ignore system-specific or IDE-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore logs and environment files
+*.log
+.env
